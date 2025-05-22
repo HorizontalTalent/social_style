@@ -4,47 +4,149 @@
   <meta charset="UTF-8">
   <title>Social Style Finder</title>
   <style>
+    :root {
+      --primary: #4a90e2;
+      --primary-light: #6ba4e7;
+      --secondary: #8e44ad;
+      --success: #2ecc71;
+      --background: #f5f7fa;
+      --text: #2c3e50;
+      --border: #dfe4ea;
+    }
+    
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0;
       padding: 2rem;
       display: flex;
       gap: 2rem;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
     }
+
     #left, #right, #summary {
       flex: 1;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    h2 {
-      margin-top: 2rem;
+
+    h1 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
     }
+
     .question {
-      margin-bottom: 1.2rem;
-    }
-    .question-title {
-      font-weight: bold;
-      margin-bottom: 0.3rem;
-    }
-    .options button {
-      margin: 0.25rem;
-      padding: 0.4rem 0.8rem;
-      cursor: pointer;
-    }
-    .selected {
-      background-color: #d0f0c0;
-    }
-    #resultBox {
+      margin-bottom: 1.5rem;
+      background: #fff;
       padding: 1rem;
-      border: 1px solid #ccc;
       border-radius: 8px;
-      background-color: #f9f9f9;
+      border: 1px solid var(--border);
     }
-    #quadrantTitle {
-      font-size: 1.3rem;
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: var(--secondary);
+    }
+
+    button {
+      margin: 0.25rem;
+      padding: 0.6rem 1.2rem;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    button:hover {
+      background: var(--primary-light);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    #resultBox {
+      padding: 1.5rem;
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .quadrant-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+      width: 300px;
+      height: 300px;
+      margin: 2rem auto;
+      position: relative;
+      background-color: var(--text);
+      padding: 2px;
+    }
+
+    .quadrant-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
       font-weight: bold;
-      margin-bottom: 0.5rem;
+      color: white;
+      text-align: center;
+      line-height: 1.4;
     }
+
+    .analytical { background-color: #f4d03f; }
+    .driver { background-color: #e74c3c; }
+    .amiable { background-color: #2ecc71; }
+    .expressive { background-color: #e67e22; }
+
+    .axis-label {
+      position: absolute;
+      font-weight: bold;
+      color: var(--text);
+      background-color: var(--background);
+      padding: 0 8px;
+      border-radius: 4px;
+    }
+
+    .axis-label.top { top: -25px; left: 50%; transform: translateX(-50%); }
+    .axis-label.bottom { bottom: -25px; left: 50%; transform: translateX(-50%); }
+    .axis-label.left { left: -40px; top: 50%; transform: translateY(-50%) rotate(-90deg); }
+    .axis-label.right { right: -40px; top: 50%; transform: translateY(-50%) rotate(90deg); }
+
+    #quadrantTitle {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+
     ul {
       padding-left: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    li {
+      margin-bottom: 0.8rem;
+    }
+
+    li strong {
+      color: var(--secondary);
     }
   </style>
 </head>
@@ -63,6 +165,18 @@
     <div id="resultBox">
       <div id="quadrantTitle">Your Style</div>
       <div id="result">Answer both sides to reveal your style quadrant.</div>
+      
+      <div class="quadrant-grid">
+        <div class="quadrant-cell analytical">Analytical<br>(C + 1/2)</div>
+        <div class="quadrant-cell driver">Driver<br>(C + 3/4)</div>
+        <div class="quadrant-cell amiable">Amiable<br>(D + 1/2)</div>
+        <div class="quadrant-cell expressive">Expressive<br>(D + 3/4)</div>
+        <div class="axis-label top">TASK</div>
+        <div class="axis-label bottom">PEOPLE</div>
+        <div class="axis-label left">ASK</div>
+        <div class="axis-label right">TELL</div>
+      </div>
+
       <ul style="margin-top: 1rem;">
         <li><strong>Analytical</strong> (C + 1/2): Serious, precise, task-driven</li>
         <li><strong>Driver</strong> (C + 3/4): Assertive, results-focused</li>
@@ -182,4 +296,3 @@
   </script>
 </body>
 </html>
-
