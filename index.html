@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Social Style Finder</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; max-width: 600px; margin: auto; }
+    .question { font-size: 1.2rem; margin-bottom: 1rem; }
+    .options button { margin: 0.5rem; padding: 0.7rem 1rem; }
+    #quadrantPreview { margin-top: 2rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Social Style Questionnaire</h1>
+  <div id="app">
+    <div class="question" id="questionText"></div>
+    <div class="options" id="options"></div>
+    <button onclick="nextQuestion()">Next</button>
+    <div id="quadrantPreview"></div>
+  </div>
+
+  <script>
+    const questions = [
+      { text: "goes along – takes charge", options: ["D", "C", "B", "A"] },
+      { text: "private – warm", options: ["D", "C", "B", "A"] },
+      { text: "quiet – talkative", options: ["D", "C", "B", "A"] },
+      { text: "calm – excitable", options: ["D", "C", "B", "A"] },
+      { text: "supportive – challenging", options: ["D", "C", "B", "A"] },
+      { text: "task-oriented – people-oriented", options: ["D", "C", "B", "A"] },
+      { text: "compliant – dominant", options: ["D", "C", "B", "A"] },
+      { text: "eyes serious – eyes friendly", options: ["D", "C", "B", "A"] },
+      { text: "asks questions – makes statements", options: ["D", "C", "B", "A"] },
+      { text: "talks business – shares feelings", options: ["D", "C", "B", "A"] }
+    ];
+
+    let currentIndex = 0;
+    const letterCount = { A: 0, B: 0, C: 0, D: 0 };
+
+    function showQuestion() {
+      const q = questions[currentIndex];
+      document.getElementById('questionText').textContent = `Q${currentIndex + 1}: ${q.text}`;
+      const optionsDiv = document.getElementById('options');
+      optionsDiv.innerHTML = '';
+      q.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.textContent = option;
+        btn.onclick = () => selectOption(option);
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function selectOption(option) {
+      letterCount[option]++;
+      document.getElementById('options').innerHTML = `<p>You selected: <strong>${option}</strong></p>`;
+    }
+
+    function nextQuestion() {
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        showQuestion();
+        updateQuadrant();
+      } else {
+        document.getElementById('app').innerHTML = `<h2>Result</h2><p>Your dominant style is likely: <strong>${getQuadrant()}</strong></p>`;
+      }
+    }
+
+    function updateQuadrant() {
+      document.getElementById('quadrantPreview').textContent = `Current trend: ${getQuadrant()}`;
+    }
+
+    function get
