@@ -126,7 +126,7 @@
     .scale-labels.vertical {
       position: absolute;
       left: -25px;
-      top: 10px;
+      top: 20;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -300,14 +300,16 @@
       container.className = "question";
       container.innerHTML = `<div class="question-title">Q${index + 1}: ${text}</div>`;
 
-      // Reverse the order of buttons only for letter questions
+      // For letter questions, we need to map the displayed button to its actual value
       const buttonsToShow = type === 'L' ? [...options].reverse() : options;
-      buttonsToShow.forEach(option => {
+      buttonsToShow.forEach((option, idx) => {
         const btn = document.createElement('button');
         btn.type = "button";
         btn.textContent = option;
         btn.onclick = () => {
-          storage[index] = option;
+          // For letter questions, map the reversed button to its actual value
+          const actualValue = type === 'L' ? options[options.length - 1 - idx] : option;
+          storage[index] = actualValue;
 
           // Reset buttons
           options.forEach(o => {
@@ -345,10 +347,10 @@
         numberCount[a] > numberCount[b] ? a : b, '1');
 
       const quadrantMatrix = {
-        A: { '1': "Expressive", '2': "Expressive", '3': "Expressive", '4': "Expressive" },
-        B: { '1': "Driver", '2': "Driver", '3': "Driver", '4': "Driver" },
-        C: { '1': "Analytical", '2': "Analytical", '3': "Driver", '4': "Driver" },
-        D: { '1': "Amiable", '2': "Amiable", '3': "Expressive", '4': "Expressive" }
+        A: { '1': "Driver", '2': "Driver", '3': "Expressive", '4': "Expressive" },
+        B: { '1': "Driver", '2': "Driver", '3': "Expressive", '4': "Expressive" },
+        C: { '1': "Analytical", '2': "Analytical", '3': "Amiable", '4': "Amiable" },
+        D: { '1': "Analytical", '2': "Analytical", '3': "Amiable", '4': "Amiable" }
       };
 
       const quadrant = quadrantMatrix[maxLetter]?.[maxNumber];
