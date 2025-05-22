@@ -265,16 +265,16 @@
 
   <script>
     const letterQuestions = [
-      "goes along ...... takes charge",
-      "private ...... warm",
-      "quiet ...... talkative",
-      "calm ...... excitable",
-      "supportive ...... challenging",
-      "task-oriented ...... people-oriented",
-      "compliant ...... dominant",
-      "eyes serious ...... eyes friendly",
-      "asks questions ...... makes statements",
-      "talks business ...... shares feelings"
+      "takes charge ...... goes along",
+      "warm ...... private",
+      "talkative ...... quiet",
+      "excitable ...... calm",
+      "challenging ...... supportive",
+      "people-oriented ...... task-oriented",
+      "dominant ...... compliant",
+      "eyes friendly ...... eyes serious",
+      "makes statements ...... asks questions",
+      "shares feelings ...... talks business"
     ];
 
     const numberQuestions = [
@@ -300,7 +300,9 @@
       container.className = "question";
       container.innerHTML = `<div class="question-title">Q${index + 1}: ${text}</div>`;
 
-      options.forEach(option => {
+      // Reverse the order of buttons only for letter questions
+      const buttonsToShow = type === 'L' ? [...options].reverse() : options;
+      buttonsToShow.forEach(option => {
         const btn = document.createElement('button');
         btn.type = "button";
         btn.textContent = option;
