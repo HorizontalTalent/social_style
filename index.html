@@ -4,68 +4,182 @@
   <meta charset="UTF-8">
   <title>Social Style Finder</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 2rem; max-width: 600px; margin: auto; }
-    .question { font-size: 1.2rem; margin-bottom: 1rem; }
-    .options button { margin: 0.5rem; padding: 0.7rem 1rem; }
-    #quadrantPreview { margin-top: 2rem; font-weight: bold; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      gap: 2rem;
+    }
+    #left, #right, #summary {
+      flex: 1;
+    }
+    h2 {
+      margin-top: 2rem;
+    }
+    .question {
+      margin-bottom: 1.2rem;
+    }
+    .question-title {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+    .options button {
+      margin: 0.25rem;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+    }
+    .selected {
+      background-color: #d0f0c0;
+    }
+    #resultBox {
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    #quadrantTitle {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    ul {
+      padding-left: 1.2rem;
+    }
   </style>
 </head>
 <body>
-  <h1>Social Style Questionnaire</h1>
-  <div id="app">
-    <div class="question" id="questionText"></div>
-    <div class="options" id="options"></div>
-    <button onclick="nextQuestion()">Next</button>
-    <div id="quadrantPreview"></div>
+  <div id="left">
+    <h1>Verbal Behavior (A–D)</h1>
+    <form id="letterQuestions"></form>
+  </div>
+
+  <div id="right">
+    <h1>Non-Verbal Behavior (1–4)</h1>
+    <form id="numberQuestions"></form>
+  </div>
+
+  <div id="summary">
+    <div id="resultBox">
+      <div id="quadrantTitle">Your Style</div>
+      <div id="result">Answer both sides to reveal your style quadrant.</div>
+      <ul style="margin-top: 1rem;">
+        <li><strong>Analytical</strong> (C + 1/2): Serious, precise, task-driven</li>
+        <li><strong>Driver</strong> (C + 3/4): Assertive, results-focused</li>
+        <li><strong>Amiable</strong> (D + 1/2): Cooperative, reserved, empathetic</li>
+        <li><strong>Expressive</strong> (D + 3/4): Outgoing, emotional, people-oriented</li>
+      </ul>
+    </div>
   </div>
 
   <script>
-    const questions = [
-      { text: "goes along – takes charge", options: ["D", "C", "B", "A"] },
-      { text: "private – warm", options: ["D", "C", "B", "A"] },
-      { text: "quiet – talkative", options: ["D", "C", "B", "A"] },
-      { text: "calm – excitable", options: ["D", "C", "B", "A"] },
-      { text: "supportive – challenging", options: ["D", "C", "B", "A"] },
-      { text: "task-oriented – people-oriented", options: ["D", "C", "B", "A"] },
-      { text: "compliant – dominant", options: ["D", "C", "B", "A"] },
-      { text: "eyes serious – eyes friendly", options: ["D", "C", "B", "A"] },
-      { text: "asks questions – makes statements", options: ["D", "C", "B", "A"] },
-      { text: "talks business – shares feelings", options: ["D", "C", "B", "A"] }
+    const letterQuestions = [
+      "goes along – takes charge",
+      "private – warm",
+      "quiet – talkative",
+      "calm – excitable",
+      "supportive – challenging",
+      "task-oriented – people-oriented",
+      "compliant – dominant",
+      "eyes serious – eyes friendly",
+      "asks questions – makes statements",
+      "talks business – shares feelings"
     ];
 
-    let currentIndex = 0;
+    const numberQuestions = [
+      "cooperative – competitive",
+      "reserved – outgoing",
+      "introverted – extroverted",
+      "uses facts – uses opinions",
+      "slow, studied – fast-paced",
+      "does not express emotion – expresses emotion",
+      "constrained – open",
+      "objective – personal",
+      "asks questions – makes statements",
+      "talks only business – shares personal feelings"
+    ];
+
     const letterCount = { A: 0, B: 0, C: 0, D: 0 };
+    const numberCount = { 1: 0, 2: 0, 3: 0, 4: 0 };
+    const userLetterAnswers = {};
+    const userNumberAnswers = {};
 
-    function showQuestion() {
-      const q = questions[currentIndex];
-      document.getElementById('questionText').textContent = `Q${currentIndex + 1}: ${q.text}`;
-      const optionsDiv = document.getElementById('options');
-      optionsDiv.innerHTML = '';
-      q.options.forEach(option => {
+    function createQuestion(index, text, options, type, storage, containerId) {
+      const container = document.createElement('div');
+      container.className = "question";
+      container.innerHTML = `<div class="question-title">Q${index + 1}: ${text}</div>`;
+
+      options.forEach(option => {
         const btn = document.createElement('button');
+        btn.type = "button";
         btn.textContent = option;
-        btn.onclick = () => selectOption(option);
-        optionsDiv.appendChild(btn);
+        btn.onclick = () => {
+          storage[index] = option;
+
+          // Reset buttons
+          options.forEach(o => {
+            const b = document.getElementById(`${type}${index}-btn-${o}`);
+            if (b) b.classList.remove("selected");
+          });
+
+          btn.classList.add("selected");
+          updateLiveQuadrant();
+        };
+        btn.id = `${type}${index}-btn-${option}`;
+        container.appendChild(btn);
       });
+
+      document.getElementById(containerId).appendChild(container);
     }
 
-    function selectOption(option) {
-      letterCount[option]++;
-      document.getElementById('options').innerHTML = `<p>You selected: <strong>${option}</strong></p>`;
-    }
+    function updateLiveQuadrant() {
+      // Reset counts
+      Object.keys(letterCount).forEach(k => letterCount[k] = 0);
+      Object.keys(numberCount).forEach(k => numberCount[k] = 0);
 
-    function nextQuestion() {
-      if (currentIndex < questions.length - 1) {
-        currentIndex++;
-        showQuestion();
-        updateQuadrant();
+      Object.values(userLetterAnswers).forEach(letter => {
+        letterCount[letter]++;
+      });
+
+      Object.values(userNumberAnswers).forEach(num => {
+        numberCount[num]++;
+      });
+
+      const maxLetter = Object.keys(letterCount).reduce((a, b) =>
+        letterCount[a] > letterCount[b] ? a : b, 'A');
+
+      const maxNumber = Object.keys(numberCount).reduce((a, b) =>
+        numberCount[a] > numberCount[b] ? a : b, '1');
+
+      const quadrantMatrix = {
+        A: { '1': "Expressive", '2': "Expressive", '3': "Expressive", '4': "Expressive" },
+        B: { '1': "Driver", '2': "Driver", '3': "Driver", '4': "Driver" },
+        C: { '1': "Analytical", '2': "Analytical", '3': "Driver", '4': "Driver" },
+        D: { '1': "Amiable", '2': "Amiable", '3': "Expressive", '4': "Expressive" }
+      };
+
+      const quadrant = quadrantMatrix[maxLetter]?.[maxNumber];
+
+      const answeredLetters = Object.keys(userLetterAnswers).length;
+      const answeredNumbers = Object.keys(userNumberAnswers).length;
+
+      if (answeredLetters === 0 && answeredNumbers === 0) {
+        document.getElementById('result').textContent = "Answer both sides to reveal your style quadrant.";
       } else {
-        document.getElementById('app').innerHTML = `<h2>Result</h2><p>Your dominant style is likely: <strong>${getQuadrant()}</strong></p>`;
+        document.getElementById('result').textContent =
+          `Your quadrant is: ${quadrant || 'Incomplete'} (${maxLetter} + ${maxNumber})`;
       }
     }
 
-    function updateQuadrant() {
-      document.getElementById('quadrantPreview').textContent = `Current trend: ${getQuadrant()}`;
-    }
+    // Load all questions
+    letterQuestions.forEach((q, i) =>
+      createQuestion(i, q, ['D', 'C', 'B', 'A'], 'L', userLetterAnswers, 'letterQuestions')
+    );
 
-    function get
+    numberQuestions.forEach((q, i) =>
+      createQuestion(i, q, ['1', '2', '3', '4'], 'N', userNumberAnswers, 'numberQuestions')
+    );
+  </script>
+</body>
+</html>
+
