@@ -84,6 +84,37 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
+    .quadrant-container {
+      width: 340px;
+      margin: 2rem auto;
+      position: relative;
+    }
+
+    .scale-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      padding: 0 20px;
+      font-weight: bold;
+      color: var(--text);
+    }
+
+    .scale-labels.vertical {
+      position: absolute;
+      left: -25px;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 300px;
+      padding: 0;
+    }
+
+    .scale-labels.horizontal {
+      width: 300px;
+      margin: 0 auto 0.5rem;
+    }
+
     .quadrant-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -91,7 +122,7 @@
       gap: 2px;
       width: 300px;
       height: 300px;
-      margin: 2rem auto;
+      margin: 0 auto;
       position: relative;
       background-color: var(--text);
       padding: 2px;
@@ -108,10 +139,10 @@
       line-height: 1.4;
     }
 
-    .analytical { background-color: #f4d03f; }
-    .driver { background-color: #e74c3c; }
-    .amiable { background-color: #2ecc71; }
-    .expressive { background-color: #e67e22; }
+    .analytical { background-color: #fff176; }
+    .driver { background-color: #ef5350; }
+    .amiable { background-color: #66bb6a; }
+    .expressive { background-color: #ffa726; }
 
     .axis-label {
       position: absolute;
@@ -152,12 +183,15 @@
 </head>
 <body>
   <div id="left">
-    <h1>Verbal Behavior (A–D)</h1>
+    <h1>Social Style Finder</h1>
+    <p style="color: var(--text); margin-bottom: 2rem;">
+      The Social Style Model helps you understand your behavioral preferences and how you come across to others.
+      It measures two key dimensions: Assertiveness (Ask vs Tell) and Responsiveness (Task vs People).
+    </p>
     <form id="letterQuestions"></form>
   </div>
 
   <div id="right">
-    <h1>Non-Verbal Behavior (1–4)</h1>
     <form id="numberQuestions"></form>
   </div>
 
@@ -166,22 +200,36 @@
       <div id="quadrantTitle">Your Style</div>
       <div id="result">Answer both sides to reveal your style quadrant.</div>
       
+      <div class="quadrant-container">
+        <div class="scale-labels horizontal">
+          <span>D</span>
+          <span>C</span>
+          <span>B</span>
+          <span>A</span>
+        </div>
+        <div class="scale-labels vertical">
+          <span>1</span>
+          <span>2</span>
+          <span>3</span>
+          <span>4</span>
+        </div>
       <div class="quadrant-grid">
-        <div class="quadrant-cell analytical">Analytical<br>(C + 1/2)</div>
-        <div class="quadrant-cell driver">Driver<br>(C + 3/4)</div>
-        <div class="quadrant-cell amiable">Amiable<br>(D + 1/2)</div>
-        <div class="quadrant-cell expressive">Expressive<br>(D + 3/4)</div>
-        <div class="axis-label top">TASK</div>
-        <div class="axis-label bottom">PEOPLE</div>
+        <div class="quadrant-cell analytical">Analytical</div>
+        <div class="quadrant-cell driver">Driver</div>
+        <div class="quadrant-cell amiable">Amiable</div>
+        <div class="quadrant-cell expressive">Expressive</div>
         <div class="axis-label left">ASK</div>
         <div class="axis-label right">TELL</div>
+        <div class="axis-label top">TASK</div>
+        <div class="axis-label bottom">PEOPLE</div>
+        </div>
       </div>
 
       <ul style="margin-top: 1rem;">
-        <li><strong>Analytical</strong> (C + 1/2): Serious, precise, task-driven</li>
-        <li><strong>Driver</strong> (C + 3/4): Assertive, results-focused</li>
-        <li><strong>Amiable</strong> (D + 1/2): Cooperative, reserved, empathetic</li>
-        <li><strong>Expressive</strong> (D + 3/4): Outgoing, emotional, people-oriented</li>
+        <li><strong>Analytical:</strong> Serious, precise, task-driven</li>
+        <li><strong>Driver:</strong> Assertive, results-focused</li>
+        <li><strong>Amiable:</strong> Cooperative, reserved, empathetic</li>
+        <li><strong>Expressive:</strong> Outgoing, emotional, people-oriented</li>
       </ul>
     </div>
   </div>
