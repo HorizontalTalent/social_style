@@ -19,10 +19,34 @@
       margin: 0;
       padding: 2rem;
       display: flex;
+      flex-direction: column;
       gap: 2rem;
       background-color: var(--background);
       color: var(--text);
       line-height: 1.6;
+    }
+
+    .title-pane {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .title-pane h1 {
+      margin-bottom: 1rem;
+    }
+
+    .title-pane p {
+      max-width: 800px;
+      margin: 0 auto;
+      color: var(--text);
+    }
+
+    .content {
+      display: flex;
+      gap: 2rem;
     }
 
     #left, #right, #summary {
@@ -102,11 +126,11 @@
     .scale-labels.vertical {
       position: absolute;
       left: -25px;
-      top: 0;
+      top: 10px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: 300px;
+      height: 280px;
       padding: 0;
     }
 
@@ -182,55 +206,60 @@
   </style>
 </head>
 <body>
-  <div id="left">
+  <div class="title-pane">
     <h1>Social Style Finder</h1>
-    <p style="color: var(--text); margin-bottom: 2rem;">
+    <p>
       The Social Style Model helps you understand your behavioral preferences and how you come across to others.
       It measures two key dimensions: Assertiveness (Ask vs Tell) and Responsiveness (Task vs People).
     </p>
-    <form id="letterQuestions"></form>
   </div>
 
-  <div id="right">
-    <form id="numberQuestions"></form>
-  </div>
+  <div class="content">
+    <div id="left">
+      <form id="letterQuestions"></form>
+    </div>
 
-  <div id="summary">
-    <div id="resultBox">
-      <div id="quadrantTitle">Your Style</div>
-      <div id="result">Answer both sides to reveal your style quadrant.</div>
-      
-      <div class="quadrant-container">
-        <div class="scale-labels horizontal">
-          <span>D</span>
-          <span>C</span>
-          <span>B</span>
-          <span>A</span>
+    <div id="right">
+      <form id="numberQuestions"></form>
+    </div>
+
+    <div id="summary">
+      <div id="resultBox">
+        <div id="quadrantTitle">Your Style</div>
+        <div id="result">Answer both sides to reveal your style quadrant.</div>
+        
+        <div class="quadrant-container">
+          <div class="scale-labels horizontal">
+            <span>D</span>
+            <span>C</span>
+            <span>B</span>
+            <span>A</span>
+          </div>
+          <div class="scale-labels vertical">
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+          </div>
+          <div class="quadrant-grid">
+            <div class="quadrant-cell analytical">Analytical</div>
+            <div class="quadrant-cell driver">Driver</div>
+            <div class="quadrant-cell amiable">Amiable</div>
+            <div class="quadrant-cell expressive">Expressive</div>
+            <div class="axis-label left">ASK</div>
+            <div class="axis-label right">TELL</div>
+            <div class="axis-label top">TASK</div>
+            <div class="axis-label bottom">PEOPLE</div>
+          </div>
         </div>
-        <div class="scale-labels vertical">
-          <span>1</span>
-          <span>2</span>
-          <span>3</span>
-          <span>4</span>
-        </div>
-      <div class="quadrant-grid">
-        <div class="quadrant-cell analytical">Analytical</div>
-        <div class="quadrant-cell driver">Driver</div>
-        <div class="quadrant-cell amiable">Amiable</div>
-        <div class="quadrant-cell expressive">Expressive</div>
-        <div class="axis-label left">ASK</div>
-        <div class="axis-label right">TELL</div>
-        <div class="axis-label top">TASK</div>
-        <div class="axis-label bottom">PEOPLE</div>
-        </div>
+
+        <ul style="margin-top: 1rem;">
+          <li><strong>Analytical:</strong> Serious, precise, task-driven</li>
+          <li><strong>Driver:</strong> Assertive, results-focused</li>
+          <li><strong>Amiable:</strong> Cooperative, reserved, empathetic</li>
+          <li><strong>Expressive:</strong> Outgoing, emotional, people-oriented</li>
+        </ul>
       </div>
-
-      <ul style="margin-top: 1rem;">
-        <li><strong>Analytical:</strong> Serious, precise, task-driven</li>
-        <li><strong>Driver:</strong> Assertive, results-focused</li>
-        <li><strong>Amiable:</strong> Cooperative, reserved, empathetic</li>
-        <li><strong>Expressive:</strong> Outgoing, emotional, people-oriented</li>
-      </ul>
     </div>
   </div>
 
